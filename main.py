@@ -9,11 +9,6 @@ import IFC2BOT.space_adjacency
 import IFC2BOT.element_hosting
 import os
 import time
-import multiprocessing as mp
-
-dir_path = os.path.dirname(os.path.realpath(__file__))
-file_path = os.path.join(dir_path, 'Duplex_A_2019_L1.ifc')
-output_file = os.path.join(dir_path, 'test.ttl')
 
 def build_bot_triples(namespace):
 
