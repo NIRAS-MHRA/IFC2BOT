@@ -23,6 +23,11 @@ This parser only converts BOT classification and relationships. This includes:
 <wall> bot:hasSubElement <door> .
 ```
 
+## Install
+* Install Python 3.8
+* Download [ifcopenshell](http://ifcopenshell.org/python) and unzip in this dir
+* You are good to go!
+
 ## Run
 `python main.py -i my-file.ifc -o my-file.ttl -ns https://niras.dk/projects/1234/`
 
