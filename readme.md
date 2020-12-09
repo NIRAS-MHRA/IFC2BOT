@@ -31,6 +31,14 @@ This parser only converts BOT classification and relationships. This includes:
 ## Run
 `python main.py -i my-file.ifc -o my-file.ttl -ns https://niras.dk/projects/1234/`
 
+### Arguments
+| Argument           | Required | Description | Default |
+|--------------------|:--------:|:------------|:--------|
+|`-i, --input_file`  | x | Path to the input file |     |
+|`-o, --output_file` |   | Path to the output file | `./triples.ttl` |
+|`-ns, --output_file`|   | The namespace in which the triples should be described | `https://ex.com/` |
+|`-s, --split`       |   | Whether classifications and relationships should be split in two different files (triples-c.ttl + triples-r.ttl) | `true` |
+
 ## Limitations
 Deriving adjacency between spaces and adjacent elements requires that the IFC is exported with space boundaries.
 

@@ -1,5 +1,5 @@
 @prefix bot: <https://w3id.org/bot#> .
-@prefix inst: <https://ex.com/> .
+@prefix inst: <http://web-bim/1234/> .
 
 ##################
 # CLASSIFICATION #

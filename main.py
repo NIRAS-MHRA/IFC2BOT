@@ -18,17 +18,15 @@ def build_bot_triples(namespace):
     input_file_path = args.input_file
     output_file_path = args.output_file
     namespace = args.namespace
+    split = args.split
 
     # Read IFC file
     ifc_file = ifcopenshell.open(input_file_path)
 
-    # Init log file
-    wipe_file(output_file_path)
-    log_file = open(output_file_path, "a")
+    pfx = "@prefix bot: <https://w3id.org/bot#> .\n"
+    pfx+= "@prefix inst: <%s> .\n\n" % namespace
 
-    triples = "@prefix bot: <https://w3id.org/bot#> .\n"
-    triples+= "@prefix inst: <%s> .\n" % namespace
-
+    triples = pfx
     triples+= "\n##################\n"
     triples+= "# CLASSIFICATION #\n"
     triples+= "##################\n"
@@ -37,6 +35,11 @@ def build_bot_triples(namespace):
     triples+= IFC2BOT.classify.classify_storeys(ifc_file)
     triples+= IFC2BOT.classify.classify_spaces(ifc_file)
     triples+= IFC2BOT.classify.classify_elements(ifc_file)
+
+    if split:
+        file_path = output_file_path.replace(".ttl", "-c.ttl")
+        serialize(file_path, triples)
+        triples = pfx
 
     triples+= "\n#################\n"
     triples+= "# RELATIONSHIPS #\n"
@@ -49,13 +52,23 @@ def build_bot_triples(namespace):
     triples+= IFC2BOT.space_adjacency.space_element_rels(ifc_file)
     triples+= IFC2BOT.element_hosting.wall_element_rels(ifc_file)
 
-    log_file.write(triples)
-    log_file.close()
+    if split:
+        file_path = output_file_path.replace(".ttl", "-r.ttl")
+    else:
+        file_path = output_file_path
+
+    serialize(file_path, triples)
 
     print("--- %s seconds ---" % (time.time() - start_time))
 
 def wipe_file(fp):
     open(fp, 'w').close()
+
+def serialize(fp, txt):
+    open(fp, 'w').close()
+    f = open(fp, "a")
+    f.write(txt)
+    f.close()
 
 def get_arguments():
     parser = argparse.ArgumentParser()
@@ -73,6 +86,11 @@ def get_arguments():
     parser.add_argument('-ns', '--namespace', 
         default='https://ex.com/',
         help='The namespace in which the triples should be described'
+    )
+
+    parser.add_argument('-s', '--split',
+        action='store_true',
+        help='Whether classifications and relationships should be split in two different files (triples-c.ttl + triples-r.ttl)'
     )
 
     return parser.parse_args()
